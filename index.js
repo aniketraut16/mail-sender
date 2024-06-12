@@ -50,6 +50,10 @@ app.post("/sendMail", async (req, res) => {
   }
 });
 
+app.get('/', (req, res) => {
+  res.send('Welcome to mail sender');
+});
+
 app.listen(5050, () => {
   console.log(`Server is running on port 5050`);
 });
