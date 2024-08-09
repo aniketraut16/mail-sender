@@ -28,7 +28,8 @@ const transporter = nodemailer.createTransport({
 });
 
 app.post("/sendMail", async (req, res) => {
-  const { receiverMail, subject, body } = req.body;
+  const { receiverMail, subject, body, attachments } = req.body;
+
   if (!receiverMail || !subject || !body) {
     return res.status(400).json({ message: "Missing required fields" });
   }
@@ -38,6 +39,7 @@ app.post("/sendMail", async (req, res) => {
     to: receiverMail,
     subject: subject,
     html: body,
+    ...(attachments && { attachments: attachments }), // Add attachments if provided
   };
 
   try {
@@ -48,10 +50,6 @@ app.post("/sendMail", async (req, res) => {
     console.error("Error sending email:", error);
     res.status(500).json({ message: "Internal server error" });
   }
-});
-
-app.get('/', (req, res) => {
-  res.send('Welcome to mail sender');
 });
 
 app.listen(5050, () => {
